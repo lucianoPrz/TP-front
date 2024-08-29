@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import "./ItemListContainer.css"
+import { useState, useEffect } from "react";
+import ItemList from "../ItemList/ItemList";
 
 const ItemListContainer = ({ greeting }) => {
   const [productos, setProductos] = useState([]);
-  const url = "https://fakestoreapi.com/products";
-
+  const url = "https://fakestoreapi.com/products"; // Corrección en la URL
+  
   useEffect(() => {
     fetch(url)
       .then(res => res.json())
@@ -14,14 +14,11 @@ const ItemListContainer = ({ greeting }) => {
 
   return (
     <div>
-      <h3>{greeting}</h3>
-      <ul>
-        {productos.map(producto => (
-          <li key={producto.id}>{producto.title}</li>
-        ))}
-      </ul>
+      <h3 className="text-center py-2 m-auto"> {greeting} </h3>
+      <h4 style={{ textAlign: "center" }}>Mis productos</h4>
+      <ItemList productos={productos} />
     </div>
   );
-}
+};
 
 export default ItemListContainer;
