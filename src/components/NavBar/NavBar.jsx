@@ -1,13 +1,16 @@
 import ScannerWidget from "../ScannerWidget/ScannerWidget"
+import { Link, NavLink } from "react-router-dom"
 
 const NavBar = () => {
     return (
         <header>
             <nav className="navbar navbar-expand-lg bg-body-secondary">
                 <div className="container-fluid">
-                    <a className="navbar-brand me-auto" href="#">
-                        APP
-                    </a>
+                    <Link to={"/"}>
+                        <h1 className="navbar-brand me-auto" href="#">
+                            APP
+                        </h1>
+                    </Link>
                     <button
                         className="navbar-toggler"
                         type="button"
@@ -22,14 +25,14 @@ const NavBar = () => {
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav ms-auto">
                             <li className="nav-item">
-                                <a className="nav-link active ms-5" aria-current="page" href="#">
+                                <NavLink to={"/"} className="nav-link active ms-5" aria-current="page" href="#">
                                     Productos
-                                </a>
+                                </NavLink>
                             </li>
                             <li>
-                                <a className="nav-link active ms-5" aria-current="page" href="#">
+                                <NavLink to={"/scanner"} className="nav-link active ms-5" aria-current="page" href="#">
                                     Scanner
-                                </a>
+                                </NavLink>
                             </li>
                         </ul>
                     </div>
