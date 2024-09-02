@@ -29,12 +29,8 @@ const ItemDetail = ({ id, title, price, image, /*stock,*/ description }) => {
           <p className="card-subtitle mb-2 text-muted">Talles únicos. Compra minima 5 unidades.</p>
         </div>
         <img src={image} alt={title} className='img card-img-top w-50 m-3' />
-        {/* {
-          agregarCantidad > 0 ? (<div>
-            <Link to="/cart" className="ms-3 btn btn-success"> Terminar Compra </Link>
-            <Link to="/" className="ms-3 btn btn-primary"> Seguir comprando </Link>
-          </div>) : (<ItemCount inicial={5} stock={stock} onAdd={handlerCantidad} />)
-        } */}
+        
+        
       </div>
     </div>
   )

@@ -13,7 +13,8 @@ const App = () => {
       <NavBar />
         <Routes>
           <Route path="/" element = {<ItemListContainer greeting={"Lista de Productos"} />}/>
-          <Route path="/scanner" element = {<Scanner/>}/>
+          <Route path="/ingreso" element = {<Scanner pantalla={"ingresos"}/>}/>
+          <Route path="/salida" element = {<Scanner pantalla={"salidas"}/>}/>
         </Routes>
       
       </BrowserRouter>

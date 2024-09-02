@@ -1,9 +1,10 @@
 import { Html5QrcodeScanner } from "html5-qrcode";
 import { useState, useEffect } from "react";
 
-const Scanner = () => {
+const Scanner = ({pantalla}) => {
     const [scanResult, setScanResult] = useState(null);
-
+    const url = "http://localhost:8080" 
+    
     useEffect(() => {
         const scanner = new Html5QrcodeScanner('reader', {
             qrbox: {
@@ -14,36 +15,35 @@ const Scanner = () => {
         });
 
         const scanSuccess = (result) => {
-            scanner.clear();  // Detiene el escaneo una vez que se ha detectado un código
             setScanResult(result);
+            scanner.clear().catch(error => console.log("Error clearing scanner:", error));
         };
 
         const scanFailure = (error) => {
-            console.log("Error al escanear:", error);
+            console.log("Scan failed:", error);
         };
 
         scanner.render(scanSuccess, scanFailure);
 
-        // Limpiar el escáner al desmontar el componente
+        // Limpiar al desmontar el componente
         return () => {
-            scanner.clear().catch(error => {
-                console.error("Error al limpiar el escáner:", error);
-            });
+            scanner.clear().catch(error => console.log("Error clearing scanner on unmount:", error));
+            // También puedes usar stop() si clear no es suficiente
+            // scanner.stop().catch(error => console.log("Error stopping scanner on unmount:", error));
         };
     }, []);
 
     return (
-        <div>
-            {
-                scanResult ? (
-                    <div>
-                        Success: <a href={scanResult}>{scanResult}</a>
-                    </div>
+        <>
+            <h3>Escáner QR - Registro de {pantalla}</h3>
+            <div>
+                {scanResult ? (
+                    <div>Success: <a href={`${url}/${scanResult}`}>{`${url}/${scanResult}`}</a></div>
                 ) : (
                     <div id="reader" width="600px"></div>
-                )
-            }
-        </div>
+                )}
+            </div>
+        </>
     );
 };
 
