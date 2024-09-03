@@ -1,9 +1,10 @@
 import { Html5QrcodeScanner } from "html5-qrcode";
 import { useState, useEffect } from "react";
+import apiConfig from "../../services/config";
 
 const Scanner = ({ pantalla }) => {
     const [scanResult, setScanResult] = useState(null);
-    const urlBase = "https://apimocha.com/tplabo/products"; // Base URL del endpoint
+    const urlBase = apiConfig.urlProduct; // Base URL del endpoint
 
     useEffect(() => {
         const scanner = new Html5QrcodeScanner('reader', {
@@ -65,8 +66,7 @@ const Scanner = ({ pantalla }) => {
         // Limpiar al desmontar el componente
         return () => {
             scanner.clear().catch(error => console.log("Error clearing scanner on unmount:", error));
-            // También puedes usar stop() si clear no es suficiente
-            // scanner.stop().catch(error => console.log("Error stopping scanner on unmount:", error));
+          
         };
     }, []);
 

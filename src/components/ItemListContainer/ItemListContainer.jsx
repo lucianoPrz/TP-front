@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import ItemList from "../ItemList/ItemList";
+import apiConfig from "../../services/config";
 
 const ItemListContainer = ({ greeting, dataType }) => {
   const [items, setItems] = useState([]);
   
   // URLs para productos y movimientos
   const urls = {
-    products: "https://apimocha.com/tplabo/products", // URL para productos
-    movements: "https://apimocha.com/tplabo/movements", // URL para movimientos
+    products: apiConfig.urlProduct,
+    movements: apiConfig.urlMovement,
   };
 
   useEffect(() => {

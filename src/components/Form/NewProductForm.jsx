@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import apiConfig from '../../services/config';
 
 const NewProductForm = () => {
     const [tipo, setTipo] = useState('');
@@ -6,7 +7,7 @@ const NewProductForm = () => {
     const [stock, setStock] = useState('');
     const [costo, setCosto] = useState('');
 
-    const url = "https://apimocha.com/tplabo/products"
+    const url = apiConfig.urlProduct
 
     const handleSubmit = async (e) => {
         e.preventDefault();
