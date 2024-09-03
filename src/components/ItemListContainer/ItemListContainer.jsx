@@ -7,7 +7,7 @@ const ItemListContainer = ({ greeting, dataType }) => {
   // URLs para productos y movimientos
   const urls = {
     products: "https://apimocha.com/tplabo/products", // URL para productos
-    movements: "https://fakestoreapi.com/products?limit=5", // URL para movimientos
+    movements: "https://apimocha.com/tplabo/movements", // URL para movimientos
   };
 
   useEffect(() => {
