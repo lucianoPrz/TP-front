@@ -1,31 +1,33 @@
 import { useState, useEffect } from "react";
 import ItemList from "../ItemList/ItemList";
 
-const ItemListContainer = ({ greeting }) => {
-  const [productos, setProductos] = useState([]);
-  const url = "https://fakestoreapi.com/products"; // API BACKEND
+const ItemListContainer = ({ greeting, dataType }) => {
+  const [items, setItems] = useState([]);
+  
+  // URLs para productos y movimientos
+  const urls = {
+    products: "https://apimocha.com/tplabo/products", // URL para productos
+    movements: "https://fakestoreapi.com/products?limit=5", // URL para movimientos
+  };
 
   useEffect(() => {
-    try {
-      const pedirProductos = async () => {
-        const response = await fetch(url)
+    const fetchData = async () => {
+      try {
+        const response = await fetch(urls[dataType]);
         const data = await response.json();
-        setProductos(data);
+        setItems(data);
+      } catch (error) {
+        console.log(`Error al obtener los ${dataType}:`, error);
       }
+    };
 
-      pedirProductos();
-    } catch (error) {
-      console.log(error);
-    }
-
-
-    
-  }, []);
+    fetchData();
+  }, [dataType]);
 
   return (
     <>
       <h3 className="text-center py-2 m-auto"> {greeting} </h3>
-      <ItemList productos={productos} />
+      <ItemList items={items} dataType={dataType} />
     </>
   );
 };

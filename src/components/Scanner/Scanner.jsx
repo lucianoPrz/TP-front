@@ -1,10 +1,10 @@
 import { Html5QrcodeScanner } from "html5-qrcode";
 import { useState, useEffect } from "react";
 
-const Scanner = ({pantalla}) => {
+const Scanner = ({ pantalla }) => {
     const [scanResult, setScanResult] = useState(null);
-    const url = "http://localhost:8080" 
-    
+    const urlBase = "http://localhost:8080/updateStock"; // Base URL del endpoint
+
     useEffect(() => {
         const scanner = new Html5QrcodeScanner('reader', {
             qrbox: {
@@ -14,9 +14,46 @@ const Scanner = ({pantalla}) => {
             fps: 5
         });
 
-        const scanSuccess = (result) => {
-            setScanResult(result);
-            scanner.clear().catch(error => console.log("Error clearing scanner:", error));
+        const scanSuccess = async (result) => {
+            // Asumimos que el resultado del escaneo es algo como "id=123&stock=10"
+            const [idParam, stockParam] = result.split('&');
+            const id = idParam.split('=')[1];
+            const stock = stockParam.split('=')[1];
+
+            // Construir la URL del endpoint
+            const endpoint = `${urlBase}/${id}`;
+            const requestBody = {
+                stock: parseInt(stock, 10),
+            };
+
+            try {
+                // Realizar la solicitud PUT
+                const response = await fetch(endpoint, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestBody),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error al actualizar el stock');
+                }
+
+                const data = await response.json();
+                console.log('Stock actualizado:', data);
+
+                // Mostrar mensaje de éxito
+                alert(`Stock actualizado exitosamente para el producto con ID ${id}.`);
+                
+                // Limpiar el resultado del escaneo
+                setScanResult(null);
+
+            } catch (error) {
+                console.error(error.message);
+                // Mostrar mensaje de error
+                alert('Hubo un problema al actualizar el stock. Intenta nuevamente.');
+            }
         };
 
         const scanFailure = (error) => {
@@ -37,11 +74,7 @@ const Scanner = ({pantalla}) => {
         <>
             <h3>Escáner QR - Registro de {pantalla}</h3>
             <div>
-                {scanResult ? (
-                    <div>Success: <a href={`${url}/${scanResult}`}>{`${url}/${scanResult}`}</a></div>
-                ) : (
-                    <div id="reader" width="600px"></div>
-                )}
+                <div id="reader" width="600px"></div>
             </div>
         </>
     );
