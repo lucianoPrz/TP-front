@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 const Scanner = ({ pantalla }) => {
     const [scanResult, setScanResult] = useState(null);
-    const urlBase = "http://localhost:8080/updateStock"; // Base URL del endpoint
+    const urlBase = "https://apimocha.com/tplabo/products"; // Base URL del endpoint
 
     useEffect(() => {
         const scanner = new Html5QrcodeScanner('reader', {

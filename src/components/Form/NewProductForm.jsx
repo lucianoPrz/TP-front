@@ -6,6 +6,8 @@ const NewProductForm = () => {
     const [stock, setStock] = useState('');
     const [costo, setCosto] = useState('');
 
+    const url = "https://apimocha.com/tplabo/products"
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -17,7 +19,7 @@ const NewProductForm = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:8080/api/products', {
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
