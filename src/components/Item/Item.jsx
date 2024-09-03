@@ -1,13 +1,14 @@
 import React from 'react';
 
-const Item = ({ id, title, price, image, tipo, producto, cantidad, costo, fecha, index, dataType }) => {
+const Item = ({ id, tipo, marca, costo, stock, title, image, price, producto, cantidad, fecha, index, dataType }) => {
   return (
     <tr>
       <th scope="row">{index}</th>
       {dataType === 'products' && <>
-        <td>{title}</td>
-        <td>${price.toLocaleString()}</td>
-        <td>100 U.</td> {/* Reemplaza con el dato real de stock si lo tienes */}
+        <td>{tipo}</td>
+        <td>{marca}</td>
+        <td>${costo}</td>
+        <td>{stock}</td> {/* Reemplaza con el dato real de stock si lo tienes */}
       </>}
       {dataType === 'movements' && <>
         <td>{title}</td>
