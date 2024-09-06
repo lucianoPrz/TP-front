@@ -1,4 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
+import ScannerWidget from "../ScannerWidget/ScannerWidget";
 
 const NavBar = () => {
     return (
@@ -29,16 +30,6 @@ const NavBar = () => {
                                 </NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink to={"/ingreso"} className="nav-link active ms-5" aria-current="page">
-                                    Ingreso
-                                </NavLink>
-                            </li>
-                            <li className="nav-item">
-                                <NavLink to={"/salida"} className="nav-link active ms-5" aria-current="page">
-                                    Salida
-                                </NavLink>
-                            </li>
-                            <li className="nav-item">
                                 <NavLink to={"/producto"} className="nav-link active ms-5" aria-current="page">
                                     Nuevo Producto
                                 </NavLink>
@@ -50,6 +41,7 @@ const NavBar = () => {
                             </li>
                         </ul>
                     </div>
+                    <ScannerWidget/>
                 </div>
             </nav>
         </header>

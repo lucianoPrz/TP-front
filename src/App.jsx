@@ -12,8 +12,7 @@ const App = () => {
       <NavBar />
         <Routes>
           <Route path="/" element = {<ItemListContainer greeting={"Lista de productos"} dataType="products" /> }/>
-          <Route path="/ingreso" element = {<Scanner pantalla={"ingresos"}/>}/>
-          <Route path="/salida" element = {<Scanner pantalla={"salidas"}/>}/>
+          <Route path="/scanner" element = {<Scanner />}/>
           <Route path="/producto" element = {<NewProductForm />}/>
           <Route path="/movimientos" element = {<ItemListContainer greeting={"Movimientos"} dataType="movements" />}/>
         </Routes>

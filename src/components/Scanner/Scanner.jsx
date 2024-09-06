@@ -2,7 +2,7 @@ import { Html5QrcodeScanner } from "html5-qrcode";
 import { useState, useEffect } from "react";
 import apiConfig from "../../services/config";
 
-const Scanner = ({ pantalla }) => {
+const Scanner = () => {
     const [scanResult, setScanResult] = useState(null);
     const urlBase = apiConfig.urlProduct; // Base URL del endpoint
 
@@ -16,15 +16,21 @@ const Scanner = ({ pantalla }) => {
         });
 
         const scanSuccess = async (result) => {
-            // Asumimos que el resultado del escaneo es algo como "id=123&stock=10"
-            const [idParam, stockParam] = result.split('&');
-            const id = idParam.split('=')[1];
-            const stock = stockParam.split('=')[1];
+            // Asumimos que el resultado del escaneo es algo como "id=123&stock=10&tipo=salida"
+            const params = new URLSearchParams(result);
+            const id = params.get('id');
+            let stock = parseInt(params.get('stock'), 10);
+            const tipo = params.get('tipo'); // 'entrada' o 'salida'
+
+            // Ajustar el stock según el tipo de movimiento
+            if (tipo === 'salida') {
+                stock = -stock;
+            }
 
             // Construir la URL del endpoint
             const endpoint = `${urlBase}/${id}`;
             const requestBody = {
-                stock: parseInt(stock, 10),
+                stock: stock,
             };
 
             try {
@@ -37,6 +43,8 @@ const Scanner = ({ pantalla }) => {
                     body: JSON.stringify(requestBody),
                 });
 
+                console.log(stock);
+                
                 if (!response.ok) {
                     throw new Error('Error al actualizar el stock');
                 }
@@ -45,7 +53,7 @@ const Scanner = ({ pantalla }) => {
                 console.log('Stock actualizado:', data);
 
                 // Mostrar mensaje de éxito
-                alert(`Stock actualizado exitosamente para el producto con ID ${id}.`);
+                alert(`Stock actualizado exitosamente por ${tipo} de productos para el producto con ID ${id}. `);
                 
                 // Limpiar el resultado del escaneo
                 setScanResult(null);
@@ -66,13 +74,12 @@ const Scanner = ({ pantalla }) => {
         // Limpiar al desmontar el componente
         return () => {
             scanner.clear().catch(error => console.log("Error clearing scanner on unmount:", error));
-          
         };
     }, []);
 
     return (
         <>
-            <h3>Escáner QR - Registro de {pantalla}</h3>
+            <h3>Escáner QR</h3>
             <div>
                 <div id="reader" width="600px"></div>
             </div>
