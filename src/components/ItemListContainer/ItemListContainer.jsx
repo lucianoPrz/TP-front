@@ -4,8 +4,9 @@ import apiConfig from "../../services/config";
 
 const ItemListContainer = ({ greeting, dataType }) => {
   const [items, setItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para la búsqueda
   
-  // URLs para productos y movimientos
   const urls = {
     products: apiConfig.urlProduct,
     movements: apiConfig.urlMovement,
@@ -17,6 +18,7 @@ const ItemListContainer = ({ greeting, dataType }) => {
         const response = await fetch(urls[dataType]);
         const data = await response.json();
         setItems(data);
+        setFilteredItems(data); // Inicialmente, mostrar todos los elementos
       } catch (error) {
         console.log(`Error al obtener los ${dataType}:`, error);
       }
@@ -25,10 +27,47 @@ const ItemListContainer = ({ greeting, dataType }) => {
     fetchData();
   }, [dataType]);
 
+  // Filtrar los elementos en función del término de búsqueda
+  useEffect(() => {
+    if (searchTerm === "") {
+      setFilteredItems(items); // Si no hay búsqueda, mostrar todos los elementos
+    } else {
+      const lowercasedFilter = searchTerm.toLowerCase();
+      const filteredData = items.filter(item => {
+        if (dataType === "products") {
+          return (
+            item.marca.toLowerCase().includes(lowercasedFilter) ||
+            item.tipo.toLowerCase().includes(lowercasedFilter)
+          );
+        } else if (dataType === "movements") {
+          return (
+            item.producto.toLowerCase().includes(lowercasedFilter) ||
+            item.tipo.toLowerCase().includes(lowercasedFilter)
+          );
+        }
+        return false;
+      });
+      setFilteredItems(filteredData);
+    }
+  }, [searchTerm, items, dataType]);
+
   return (
     <>
       <h3 className="text-center py-2 m-auto"> {greeting} </h3>
-      <ItemList items={items} dataType={dataType} />
+
+      {/* Campo de búsqueda */}
+      <div className="text-center">
+        <input
+          type="text"
+          placeholder={`Buscar ${dataType === "products" ? "productos" : "movimientos"}...`}
+          className="form-control mb-3 w-50 mx-auto"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
+      {/* Lista filtrada */}
+      <ItemList items={filteredItems} dataType={dataType} />
     </>
   );
 };
