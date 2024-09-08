@@ -38,4 +38,13 @@ export default defineConfig({
       }
     })
   ],
+  server: {
+    proxy: {
+      '/config': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 })

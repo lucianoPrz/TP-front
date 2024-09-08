@@ -39,6 +39,11 @@ const NavBar = () => {
                                     Movimientos
                                 </NavLink>
                             </li>
+                            <li className="nav-item">
+                                <NavLink to={"/config"} className="nav-link active ms-5" aria-current="page">
+                                    Configuración
+                                </NavLink>
+                            </li>
                         </ul>
                     </div>
                     <ScannerWidget/>
