@@ -33,6 +33,8 @@ const Scanner = () => {
                 stock: stock,
             };
 
+            console.log(endpoint);
+
             try {
                 // Realizar la solicitud PUT
                 const response = await fetch(endpoint, {
