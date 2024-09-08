@@ -26,6 +26,7 @@ const Scanner = () => {
             if (tipo === 'salida') {
                 stock = -stock;
             }
+            console.log(id);
 
             // Construir la URL del endpoint
             const endpoint = `${urlBase}/${id}`;

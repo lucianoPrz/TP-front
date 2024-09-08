@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import apiConfig from '../../services/config';
 
-const ConfigModule = ( ) => { 
-const url = apiConfig.urlConfig
+const ConfigModule = () => { 
+  const url = apiConfig.urlConfig; // URL del endpoint de configuración
   const [config, setConfig] = useState({
     stockMin: 0,
     porcentajeCostoMax: 0,
   });
 
   const [loading, setLoading] = useState(false);
-  
 
+  // Manejar el cambio en los inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
     setConfig({
@@ -19,10 +19,12 @@ const url = apiConfig.urlConfig
     });
   };
 
+  // Manejar el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
+      console.log(JSON.stringify(config));
       // Realizar solicitud PUT al endpoint con el id de configuración
       const response = await fetch(url, { 
         method: 'PUT',
@@ -47,13 +49,13 @@ const url = apiConfig.urlConfig
       <h2>Configuración de Márgenes y Costo</h2>
 
       <div className="mb-3">
-        <label htmlFor="stockMargin" className="form-label">Margen de Stock</label>
+        <label htmlFor="stockMin" className="form-label">Margen de Stock</label>
         <input
           type="number"
           className="form-control"
-          id="stockMargin"
-          name="stockMargin"
-          value={config.stockMargin}
+          id="stockMin"
+          name="stockMin"
+          value={config.stockMin}
           onChange={handleChange}
           placeholder="Ingresa el margen de stock"
           required
@@ -61,15 +63,15 @@ const url = apiConfig.urlConfig
       </div>
 
       <div className="mb-3">
-        <label htmlFor="costValue" className="form-label">Valor del Costo</label>
+        <label htmlFor="porcentajeCostoMax" className="form-label">Porcentaje Máximo de Costo</label>
         <input
           type="number"
           className="form-control"
-          id="costValue"
-          name="costValue"
-          value={config.costValue}
+          id="porcentajeCostoMax"
+          name="porcentajeCostoMax"
+          value={config.porcentajeCostoMax}
           onChange={handleChange}
-          placeholder="Ingresa el valor del costo"
+          placeholder="Ingresa el porcentaje máximo de costo"
           required
         />
       </div>
