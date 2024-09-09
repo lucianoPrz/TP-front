@@ -17,6 +17,7 @@ const ItemListContainer = ({ greeting, dataType }) => {
       try {
         const response = await fetch(urls[dataType]);
         const data = await response.json();
+        console.log(data);
         setItems(data);
         setFilteredItems(data); // Inicialmente, mostrar todos los elementos
       } catch (error) {
