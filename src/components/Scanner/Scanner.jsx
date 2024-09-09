@@ -16,11 +16,11 @@ const Scanner = () => {
         });
 
         const scanSuccess = async (result) => {
-            // Asumimos que el resultado del escaneo es algo como "id=123&stock=10&tipo=salida"
+            // ejemplo de "id=123&stock=10&tipo=salida"
             const params = new URLSearchParams(result);
             const id = params.get('id');
             let stock = parseInt(params.get('stock'), 10);
-            const tipo = params.get('tipo'); // 'entrada' o 'salida'
+            const tipo = params.get('tipo'); // 'ingreso' o 'salida'
 
             // Ajustar el stock según el tipo de movimiento
             if (tipo === 'salida') {
