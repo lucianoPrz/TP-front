@@ -8,7 +8,7 @@ const NavBar = () => {
                 <div className="container-fluid">
                     <Link to={"/"}>
                         <h1 className="navbar-brand me-auto">
-                            APP
+                            Gestion Stock QR
                         </h1>
                     </Link>
                     <button
