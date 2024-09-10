@@ -46,7 +46,16 @@ const Scanner = () => {
                     body: JSON.stringify(requestBody),
                 });
 
-                console.log(stock);
+                if (response.status === 400) {
+                    // Extraer el cuerpo de la respuesta para obtener la descripción del error
+                    const errorData = await response.json();
+                    const errorDescription = errorData.description || "Descripción no disponible";
+
+                    // Mostrar el mensaje de error con la descripción
+                    alert(`No se puede realizar ${tipo} de producto con ID ${id} con stock ${Math.abs(stock)}. ${errorDescription}`);
+                } else if (!response.ok) {
+                    throw new Error('Error al actualizar el stock');
+                }
                 
                 if (!response.ok) {
                     throw new Error('Error al actualizar el stock');
