@@ -14,13 +14,18 @@ const Scanner = () => {
             fps: 5
         });
 
+        let scanSuccessful = false;
+
         const scanSuccess = async (result) => {
+            if (scanSuccessful) return; // Si ya se procesó un escaneo, no hacer nada más
+
+            scanSuccessful = true;
+
             const params = new URLSearchParams(result);
             const id = params.get('id');
             let stock = parseInt(params.get('stock'), 10);
             const tipo = params.get('tipo'); // 'ingreso' o 'salida'
 
-            // Ajustar el stock según el tipo de movimiento
             if (tipo === 'salida') {
                 stock = -stock;
             }
@@ -49,12 +54,13 @@ const Scanner = () => {
                 const data = await response.json();
                 console.log('Stock actualizado:', data);
 
-                // Mostrar mensaje de éxito
                 alert(`Stock actualizado exitosamente por ${tipo} de productos para el producto con ID ${id}.`);
 
             } catch (error) {
                 console.error(error.message);
                 alert('Hubo un problema al actualizar el stock. Intenta nuevamente.');
+            } finally {
+                scanSuccessful = false; // Permitir escaneos futuros
             }
         };
 
