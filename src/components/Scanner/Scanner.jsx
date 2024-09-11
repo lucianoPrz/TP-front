@@ -1,9 +1,8 @@
 import { Html5QrcodeScanner } from "html5-qrcode";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import apiConfig from "../../services/config";
 
 const Scanner = () => {
-    const [scanResult, setScanResult] = useState(null);
     const urlBase = apiConfig.urlProduct; // Base URL del endpoint
 
     useEffect(() => {
@@ -16,7 +15,6 @@ const Scanner = () => {
         });
 
         const scanSuccess = async (result) => {
-            // ejemplo de "id=123&stock=10&tipo=salida"
             const params = new URLSearchParams(result);
             const id = params.get('id');
             let stock = parseInt(params.get('stock'), 10);
@@ -26,18 +24,12 @@ const Scanner = () => {
             if (tipo === 'salida') {
                 stock = -stock;
             }
-            console.log(id);
+            console.log(`Producto ID: ${id}, Tipo: ${tipo}, Stock: ${stock}`);
 
-            // Construir la URL del endpoint
             const endpoint = `${urlBase}/${id}`;
-            const requestBody = {
-                stock: stock,
-            };
-
-            console.log(endpoint);
+            const requestBody = { stock };
 
             try {
-                // Realizar la solicitud PUT
                 const response = await fetch(endpoint, {
                     method: 'PUT',
                     headers: {
@@ -46,33 +38,22 @@ const Scanner = () => {
                     body: JSON.stringify(requestBody),
                 });
 
-                if (response.status === 400) {
-                    // Extraer el cuerpo de la respuesta para obtener la descripción del error
+                if (!response.ok) {
                     const errorData = await response.json();
                     const errorDescription = errorData.description || "Descripción no disponible";
 
-                    // Mostrar el mensaje de error con la descripción
                     alert(`No se puede realizar ${tipo} de producto con ID ${id} con stock ${Math.abs(stock)}. ${errorDescription}`);
-                } else if (!response.ok) {
-                    throw new Error('Error al actualizar el stock');
-                }
-                
-                if (!response.ok) {
-                    throw new Error('Error al actualizar el stock');
+                    return;
                 }
 
                 const data = await response.json();
                 console.log('Stock actualizado:', data);
 
                 // Mostrar mensaje de éxito
-                alert(`Stock actualizado exitosamente por ${tipo} de productos para el producto con ID ${id}. `);
-                
-                // Limpiar el resultado del escaneo
-                setScanResult(null);
+                alert(`Stock actualizado exitosamente por ${tipo} de productos para el producto con ID ${id}.`);
 
             } catch (error) {
                 console.error(error.message);
-                // Mostrar mensaje de error
                 alert('Hubo un problema al actualizar el stock. Intenta nuevamente.');
             }
         };
@@ -83,11 +64,10 @@ const Scanner = () => {
 
         scanner.render(scanSuccess, scanFailure);
 
-        // Limpiar al desmontar el componente
         return () => {
             scanner.clear().catch(error => console.log("Error clearing scanner on unmount:", error));
         };
-    }, []);
+    }, [urlBase]);
 
     return (
         <>
